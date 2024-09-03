@@ -1,0 +1,35 @@
+Exemplo de Tabela Vendas
+
+CREATE TABLE Vendas (
+    id INT PRIMARY KEY,
+    data_venda DATE,
+    produto_id INT,
+    quantidade INT
+);
+
+Procedimento para o Relatório Diário
+
+DELIMITER //
+
+CREATE PROCEDURE RelatorioVendasDiario(IN data_consulta DATE)
+BEGIN
+    SELECT 
+        data_venda, 
+        produto_id, 
+        SUM(quantidade) AS total_quantidade
+    FROM 
+        Vendas
+    WHERE 
+        data_venda = data_consulta
+    GROUP BY 
+        data_venda, 
+        produto_id;
+END //
+
+DELIMITER ;
+
+Para gerar o relatório diário, você pode chamar a procedure passando a data desejada:
+
+CALL RelatorioVendasDiario('2024-09-02');
+
+
